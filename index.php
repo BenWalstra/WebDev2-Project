@@ -27,7 +27,7 @@
 			<li><a href="platforms.php">Platforms</a></li>
 			<li><a href="#">UserPage</a></li>
 			<?php if ($user['Admin'] ==="y") :?>
-				<li><a href="#">Admin Tools</a></li>
+				<li><a href="AdminTools.php">Admin Tools</a></li>
 			<?php endif	?>
 		</ul>	
 	</div>
