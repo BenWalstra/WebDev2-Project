@@ -1,27 +1,33 @@
 <?php
-
+	require('connect.php');
+	require('scripts.php');
 ?>
 <!DOCTYPE html>
 <html>
 <head>
-	<title>Log In</title>
+  <title>Log In</title>
 </head>
 <body>
-	<form action="Authenticate.php" method="post">
-		<fieldset>
-			<legend>Please Log In</legend>
-			<p>
-				<label for="username">User Name</label>
-			  	<input name="username" id="username" />
-			</p>
-			<p>
-				<label for="password">Password</label>
-				<textarea name="password" id="password"></textarea>
-			</p>
-			<p>
-				<input type="submit" name="command" value="Create" />
-			</p>
-		</fieldset>
-	</form>
+  <div class="header">
+  	<h2>Login</h2>
+  </div>
+	 
+  <form method="post" action="server.php">
+  	<?php include('errors.php'); ?>
+  	<div class="input-group">
+  		<label>Username</label>
+  		<input type="text" name="username" >
+  	</div>
+  	<div class="input-group">
+  		<label>Password</label>
+  		<input type="password" name="password">
+  	</div>
+  	<div class="input-group">
+  		<button type="submit" class="btn" name="login_user">Login</button>
+  	</div>
+  	<p>
+  		Not yet a member? <a href="signUp.php">Sign up</a>
+  	</p>
+  </form>
 </body>
 </html>

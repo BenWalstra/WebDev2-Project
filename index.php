@@ -1,5 +1,14 @@
 <?php
 	require("scripts.php");
+	require("connect.php");
+	session_start();
+	$user = "";
+	if (isset($_SESSION['user'])) {
+		
+		$user = $_SESSION['user'];
+	}
+
+
 ?>
 <!DOCTYPE html>
 <html>
@@ -17,6 +26,9 @@
 			<li><a href="index.php">Home</a></li>
 			<li><a href="platforms.php">Platforms</a></li>
 			<li><a href="#">UserPage</a></li>
+			<?php if ($user['Admin'] ==="y") :?>
+				<li><a href="#">Admin Tools</a></li>
+			<?php endif	?>
 		</ul>	
 	</div>
 
