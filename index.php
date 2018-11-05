@@ -1,18 +1,23 @@
+<?php
+	require("scripts.php");
+?>
 <!DOCTYPE html>
 <html>
 <head>
 	<meta charset="utf-8"/>
 	<meta name="viewport" content="width=device-width, initial-scale=1"/>
 	<title>Winnipeg Games</title>
-	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"/>
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 </head>
 <body>
 
 	<div class="container">
 		<h1>Winnipeg Games</h1>
 		<p>Where gamers live</p>
+		<ul class="nav nav-tabs" role="tablist">
+			<li><a href="index.html">Home</a></li>
+			<li><a href="platforms.php">Platforms</a></li>
+			<li><a href="#">UserPage</a></li>
+		</ul>	
 	</div>
 
 </body>
