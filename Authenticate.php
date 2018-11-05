@@ -1,45 +1,87 @@
 <?php
-	require('connect.php');
-	$username = filter_input(INPUT_POST,'username', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
-/*
-	$password = filter_input(INPUT_POST,'password', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
-
-	if ($_POST && !empty($username) && !empty($password)) {
-		$query = "SELECT UserID, ScreenName, password FROM Users WHERE ScreenName = $username ";
-    	$statement = $db->prepare($query);
-    	$statement->execute(); 
-	}*/
+	require("connect.php");
+	//require("images.php");
+	session_start();
 
 
+	// initializing variables
+	$username = "";
+	$fName    = "";
+	$lName    = "";
+	$birthDate    = "";
+	$Admin    = "n";
+	$profilePic    = "";
+	$email    = "";
+	$about 	  = "";
+	$errors = array(); 
 
-    // Using prepared statements means that SQL injection is not possible. 
-    if ($stmt = $db->prepare("SELECT UserID, ScreenName, password 
-        FROM Users WHERE email = ? ")) {
-        $stmt->bind_param('s', $username);  // Bind username to parameter.
-        $stmt->execute();    // Execute the prepared query.
-        $stmt->store_result();
- 
-        // get variables from result.
-        $stmt->bind_result($user_id, $username, $db_password);
-        $stmt->fetch();
- 
-        if ($stmt->num_rows == 1) {
-                // Check if the password in the database matches
-                if (password_verify($password, $db_password)) {
-                    $user_browser = $_SERVER['HTTP_USER_AGENT'];
-                    // XSS protection as we might print this value
-                    $user_id = preg_replace("/[^0-9]+/", "", $user_id);
-                    $_SESSION['user_id'] = $user_id;
-                    $username = preg_replace("/[^a-zA-Z0-9_\-]+/","",$username);
-                    $_SESSION['username'] = $username;
-                    $_SESSION['login_string'] = hash('sha512', $db_password . $user_browser);
+	// REGISTER USER
+	if (isset($_POST['reg_user'])) {
+	  // receive all input values from the form
+	  $username = $_POST['username'];
+	  $email = $_POST['email'];
+	  $password_1 = $_POST['password_1'];
+	  $password_2 = $_POST['password_2'];
+	  $fName = $_POST['fName'];
+	  $lName = $_POST['lName'];
+	  $birthDate = $_POST['birthdate'];
+	  $about = $_POST['about'];
 
-                    echo "Password is right";
 
-            	} else {
-            		echo "Password is wrong";
-            	}
-        } 
 
-}
- ?>
+	  if (empty($username)) { array_push($errors, "Username is required"); }
+	  if (empty($email)) { array_push($errors, "Email is required"); }
+	  if (empty($password_1)) { array_push($errors, "Password is required"); }
+	  if (empty($lName)) { array_push($errors, "Last Name is required"); }
+	  if (empty($fName)) { array_push($errors, "First Name is required"); }
+	  if (empty($birthDate)) { array_push($errors, "Birthdate is required"); }
+	  if (empty($about)) { array_push($errors, "About is required"); }
+	  if ($password_1 != $password_2) { array_push($errors, "The two passwords do not match");}
+
+	  // first check the database to make sure 
+	  // a user does not already exist with the same username and/or email
+	  $query = "SELECT * FROM users WHERE ScreenName='$username' OR email='$email' LIMIT 1";
+    $statement = $db->prepare($query);
+    $statement->execute(); 
+	$user = $statement->fetch();
+
+	  if ($user) { // if user exists
+	    if ($user['ScreenName'] === $username) {
+	      array_push($errors, "Username already exists");
+	    }
+
+	    if ($user['email'] === $email) {
+	      array_push($errors, "email already exists");
+	    }
+	  }
+
+	  // Finally, register user if there are no errors in the form
+	  if (count($errors) == 0) {
+	  	$password = md5($password_1);//encrypt the password before saving in the database
+
+	  	$query2 = "INSERT INTO users (ScreenName, email, password, FName, LName, Birthdate, Admin, About) 
+	  			  VALUES (:username, :email, :password, :fName, :lName, :birthDate, :Admin, :about)";
+
+		$statement2 = $db->prepare($query2);
+        $statement2->bindValue(':username',$username);
+        $statement2->bindValue(':email',$email);
+        $statement2->bindValue(':password',$password);
+        $statement2->bindValue(':fName',$fName);
+        $statement2->bindValue(':lName',$lName);
+        $statement2->bindValue(':birthDate',$birthDate);
+        $statement2->bindValue(':Admin',$Admin);
+        $statement2->bindValue(':about',$about);
+
+        if ($statement2->execute()) {
+        	$_SESSION['username'] = $username;
+	  		$_SESSION['success'] = "You are now logged in";
+	  		echo $_SESSION['success'];
+        }
+        
+
+
+	  	}else{
+	  		echo "error";
+	  	}
+	}
+?>
