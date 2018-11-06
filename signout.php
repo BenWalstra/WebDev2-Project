@@ -1,5 +1,4 @@
 <?php
-	$user = "";
 ?>
 <span>
 	<?php if ($user==="") :?>

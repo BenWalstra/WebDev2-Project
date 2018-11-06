@@ -13,6 +13,7 @@
 </head>
 <body>
 	<div class="container">
+		<?php include('nav.php')?>	
 		<ul class="nav nav-pills nav-stacked" role="tablist">
 		<?php if ($statement->rowCount() != 0) : ?>
 			<?php while($row = $statement->fetch()):?>

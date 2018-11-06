@@ -9,7 +9,31 @@
 		}
 	}
 
-	
+	if (isset($_POST['newplatform'])) {
+		$name = filter_input(INPUT_POST, 'platname', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+		$mfr = filter_input(INPUT_POST, 'mfr', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+
+		$query = "SELECT * FROM platforms WHERE ScreenName='$name'";
+   		$statement = $db->prepare($query);
+    	$statement->execute(); 
+		$user = $statement->fetch();
+		if ($statement->rowCount()==0) {
+			$query = "INSERT INTO platforms (MFR,Name) VALUES (:mfr,:name)";
+			$statement = $db->prepare($query);
+        	$statement->bindValue(':mfr',$mfr);
+        	$statement->bindValue(':name',$name);
+
+        	if ($statement->execute()) {
+	 	    header('Location: index.php');   
+	  		}
+	    	exit;
+		}
+		else
+		{
+			echo "Platform already exists";
+		}
+	}
+
 ?>
 <!DOCTYPE html>
 <html>
@@ -27,7 +51,7 @@
   			</div>
   			<div class="input-group">
   				<label>Platform Name</label>
-  				<input type="text" name="platform">
+  				<input type="text" name="platname">
   			</div>
   			<div class="input-group">
   				<button type="submit" class="btn" name="newplatform">Add</button>
