@@ -3,11 +3,22 @@
 	require("connect.php");
 	session_start();
 	$user = "";
+	$msg="";
 	if (isset($_SESSION['user'])) {
 		
 		$user = $_SESSION['user'];
 	}
+	if (isset($_SESSION['success'])) {
+		$msg = $_SESSION['success'];
+		$_SESSION['success'] = ""; 
+	}
 
+	if (isset($_GET['logout'])) {
+		session_destroy();
+		unset($_SESSION['user']);
+		unset($_SESSION['success']);
+		header('location: index.php');
+	}
 
 ?>
 <!DOCTYPE html>
@@ -20,16 +31,17 @@
 <body>
 
 	<div class="container">
+		<span>
+			<?php if ($user==="") :?>
+				<a href="login.php">Login</a> OR <a href="singup.php">Sign Up</a>
+			<?php else : ?>
+				<a href="#"><?=$user['ScreenName']?></a> <a href="index.php?logout=1">Log Out</a>
+			<?php endif ?>
+		</span>
 		<h1>Winnipeg Games</h1>
 		<p>Where gamers live</p>
-		<ul class="nav nav-tabs" role="tablist">
-			<li><a href="index.php">Home</a></li>
-			<li><a href="platforms.php">Platforms</a></li>
-			<li><a href="#">UserPage</a></li>
-			<?php if ($user['Admin'] ==="y") :?>
-				<li><a href="AdminTools.php">Admin Tools</a></li>
-			<?php endif	?>
-		</ul>	
+		<p><?=$msg?></p>
+		<?php include('nav.php')?>	
 	</div>
 
 </body>

@@ -51,14 +51,14 @@
 		 array_push($errors, "The two passwords do not match");
 		}
 
-	  	//check the database to make sure a user does not already exist with the same username and/or email
+	  	//check the database to make sure a user does not exist with the same username and/or email
 
 		$query = "SELECT * FROM users WHERE ScreenName='$username' OR email='$email' LIMIT 1";
    		$statement = $db->prepare($query);
     	$statement->execute(); 
 		$user = $statement->fetch();
 
-		// if user exists
+		// check if user exists
 		if ($user){ 
 		    if ($user['ScreenName'] === $username) {
 		      array_push($errors, "Username already exists");
@@ -69,7 +69,7 @@
 		    }
 		}
 
-		// Finally, register user if there are no errors in the form
+		// register user if there are no 
 		if (count($errors) == 0) {
 	  		$password = password_hash($password_1, PASSWORD_DEFAULT);//encrypt the password before saving in the database
 
@@ -87,18 +87,17 @@
 	        $statement2->bindValue(':about',$about);
 
 	        if ($statement2->execute()) {
-	        	$user = $statement->fetch()
+	        	$user = $statement->fetch();
 	        	$_SESSION['username'] = $username;
-		  		$_SESSION['success'] = "You are now logged in";
+		  		$_SESSION['success'] = "Registration complete you are now logged in";
 		  		$_SESSION['user'] = $user;
-		  		echo $_SESSION['success'];
+		  		header('location: index.php');
 	        }
 
 	  	} else {
 	  		$isErrors = true;
 	  	}
 	}
-
 
 	//Log In User
 	if (isset($_POST['login_user'])) {
@@ -131,8 +130,11 @@
 		  		}
 	  		}
 	  		else {
-	  			$isErrors = false;
+	  			$isErrors = true;
 	  		}
+	  	}
+	  	else {
+	  		$isErrors = true;
 	  	}
 	}
 
@@ -140,3 +142,12 @@
 	  require("errors.php");
 	}
 ?>
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Confirmation</title>
+</head>
+<body>
+
+</body>
+</html>
