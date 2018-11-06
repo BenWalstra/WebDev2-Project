@@ -13,7 +13,7 @@
 		$name = filter_input(INPUT_POST, 'platname', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
 		$mfr = filter_input(INPUT_POST, 'mfr', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
 
-		$query = "SELECT * FROM platforms WHERE ScreenName='$name'";
+		$query = "SELECT * FROM platforms WHERE Name='$name'";
    		$statement = $db->prepare($query);
     	$statement->execute(); 
 		$user = $statement->fetch();
@@ -31,6 +31,7 @@
 		else
 		{
 			echo "Platform already exists";
+			header('Location: addPlatform.php');   
 		}
 	}
 

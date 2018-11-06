@@ -1,6 +1,7 @@
 <?php
     require("scripts.php");
     require('connect.php');
+    session_start();
     $query = "SELECT * FROM Platforms ORDER BY Name DESC";
     $statement = $db->prepare($query);
     $statement->execute(); 
