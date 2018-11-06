@@ -2,9 +2,20 @@
     require("scripts.php");
     require('connect.php');
     session_start();
-    $query = "SELECT * FROM Platforms ORDER BY Name DESC";
+    if (isset($_GET['id'])) {
+    	$id = $_GET['id'];
+    }
+    
+    //Select all the games with the passed in value
+    $query = "SELECT games.Name FROM games, platforms WHERE games.PlatformID ='$id'  AND games.PlatformID = platforms.PlatformID ORDER BY games.Name DESC";
     $statement = $db->prepare($query);
-    $statement->execute(); 
+    if ($statement->execute() ) {
+    	
+    }
+    else{
+    	echo "error";
+    }
+    
 ?>
 
 <!DOCTYPE html>
@@ -18,7 +29,7 @@
 		<ul class="nav nav-pills nav-stacked" role="tablist">
 		<?php if ($statement->rowCount() != 0) : ?>
 			<?php while($row = $statement->fetch()):?>
-				<li><a href="Games.php?id=<?=$row['PlatformID']?>"><?=$row['Name']?></a></li>
+				<li><a href="#"><?=$row['Name']?></a></li>
 			<?php endwhile ?>
 		<?php endif ?>
 		</ul>
