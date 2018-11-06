@@ -87,7 +87,10 @@
 	        $statement2->bindValue(':about',$about);
 
 	        if ($statement2->execute()) {
-	        	$user = $statement->fetch();
+	        	$query = "SELECT * FROM users WHERE ScreenName='$username' OR email='$email' LIMIT 1";
+	   			$statement = $db->prepare($query);
+		    	$statement->execute();
+				$user = $statement->fetch();
 	        	$_SESSION['username'] = $username;
 		  		$_SESSION['success'] = "Registration complete you are now logged in";
 		  		$_SESSION['user'] = $user;
