@@ -11,7 +11,7 @@
   <div class="header">
   	<h2>Login</h2>
   </div>
-	 
+   <?php include('nav.php')?>
   <form method="post" action="server.php">
   	<div class="input-group">
   		<label>Username/email</label>

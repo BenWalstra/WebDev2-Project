@@ -31,13 +31,7 @@
 <body>
 
 	<div class="container">
-		<span>
-			<?php if ($user==="") :?>
-				<a href="login.php">Login</a> OR <a href="singup.php">Sign Up</a>
-			<?php else : ?>
-				<a href="#"><?=$user['ScreenName']?></a> <a href="index.php?logout=1">Log Out</a>
-			<?php endif ?>
-		</span>
+		<?php include('signout.php')?>
 		<h1>Winnipeg Games</h1>
 		<p>Where gamers live</p>
 		<p><?=$msg?></p>
