@@ -18,18 +18,25 @@
 		//filter / sanatize inputs
 		$name = filter_input(INPUT_POST, 'gamename', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
 		$mfr = filter_input(INPUT_POST, 'mfr', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+		$genre = filter_input(INPUT_POST, 'genre', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+		$rating = filter_input(INPUT_POST, 'rating', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+		$releaseDate = $_POST['releasedate'];
+		$platformID = filter_input(INPUT_POST, 'platform', FILTER_SANITIZE_NUMBER_INT);
 
-		
+		//Getting all the games in the database where the name is the same as one user tried to input
 		$query = "SELECT * FROM games WHERE Name='$name'";
    		$statement = $db->prepare($query);
     	$statement->execute(); 
 		$user = $statement->fetch();
+
+		//if no name mathes proceed to add the game
 		if ($statement->rowCount()==0) {
 			$query = "INSERT INTO platforms (MFR,Name) VALUES (:mfr,:name)";
 			$statement = $db->prepare($query);
         	$statement->bindValue(':mfr',$mfr);
         	$statement->bindValue(':name',$name);
 
+        	//if added succesfully return to home page
         	if ($statement->execute()) {
 	 	    header('Location: index.php');   
 	  		}
@@ -37,7 +44,7 @@
 		}
 		else
 		{
-			echo "Platform already exists";
+			echo "Game already exists";
 			header('Location: addPlatform.php');   
 		}
 	}
