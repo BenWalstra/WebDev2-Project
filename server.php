@@ -75,7 +75,7 @@
 
 		// Finally, register user if there are no errors in the form
 		if (count($errors) == 0) {
-	  		$password = md5($password_1);//encrypt the password before saving in the database
+	  		$password = password_hash($password_1, PASSWORD_DEFAULT);//encrypt the password before saving in the database
 
 	  		$query2 = "INSERT INTO users (ScreenName, email, password, FName, LName, Birthdate, Admin, About) 
 	  			VALUES (:username, :email, :password, :fName, :lName, :birthDate, :Admin, :about)";
@@ -115,21 +115,25 @@
 	  	}
 
 	  	if (count($errors) == 0) {
-	  		$password = md5($pasword);
-			$query = "SELECT * FROM users WHERE ScreenName='$username' OR email='$email' AND password='$password' LIMIT 1";
+			$query = "SELECT * FROM users WHERE ScreenName='$username' OR email='$email' LIMIT 1";
 	   		$statement = $db->prepare($query);
-	    	$statement->execute(); 
-			$user = $statement->fetch();
+		    if ($statement->execute()) {
+		    	 
+				$user = $statement->fetch();
+				$hashPass = $user['password'];
 
-	  		if ($statement->execute()) {
-	  	  		$_SESSION['username'] = $username;
-	  	  		$_SESSION['success'] = "You are now logged in";
-	  	  		$_SESSION['user'] = $user;
-	  	  	header('location: index.php');
-
-	  		}else {
-	  			array_push($errors, "Wrong username/password combination");
-	  			echo "error";
+		  		if (password_verify($password, $hashPass)) {
+			  		$_SESSION['username'] = $username;
+			  	  	$_SESSION['success'] = "You are now logged in";
+			  	  	$_SESSION['user'] = $user;
+			  	  	header('location: index.php');
+		  		}else {
+		  			array_push($errors, "Wrong username/password combination");
+		  			echo "error";
+		  		}
+	  		}
+	  		else {
+	  			//make error flag for wrong username password
 	  		}
 	  	}
 	}
