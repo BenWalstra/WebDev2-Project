@@ -14,7 +14,7 @@
     $statement->execute(); 
 
     //if a post has occured
-	if (isset($_POST['newplatform'])) {
+	if (isset($_POST['newgame'])) {
 		//filter / sanatize inputs
 		$name = filter_input(INPUT_POST, 'gamename', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
 		$mfr = filter_input(INPUT_POST, 'mfr', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
@@ -31,10 +31,14 @@
 
 		//if no name mathes proceed to add the game
 		if ($statement->rowCount()==0) {
-			$query = "INSERT INTO platforms (MFR,Name) VALUES (:mfr,:name)";
+			$query = "INSERT INTO games (MFR,Name,Genre,Rating,ReleaseDate,PlatformID) VALUES (:mfr,:name,:genre,:rating,:releasedate,:platofrmid)";
 			$statement = $db->prepare($query);
         	$statement->bindValue(':mfr',$mfr);
         	$statement->bindValue(':name',$name);
+        	$statement->bindValue(':genre',$genre);
+        	$statement->bindValue(':rating',$rating);
+        	$statement->bindValue(':releasedate',$releaseDate);
+        	$statement->bindValue(':platofrmid',$platformID);
 
         	//if added succesfully return to home page
         	if ($statement->execute()) {
