@@ -13,9 +13,8 @@
   </div>
 	 
   <form method="post" action="server.php">
-  	<?php include('errors.php'); ?>
   	<div class="input-group">
-  		<label>Username</label>
+  		<label>Username/email</label>
   		<input type="text" name="username" >
   	</div>
   	<div class="input-group">

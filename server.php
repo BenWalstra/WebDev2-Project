@@ -1,8 +1,6 @@
 <?php
 	require("connect.php");
-	//require("images.php");
 	session_start();
-
 
 	// initializing variables
 	$username = "";
@@ -14,6 +12,7 @@
 	$email    = "";
 	$about 	  = "";
 	$errors = array(); 
+	$isErrors = false;
 
 	// REGISTER USER
 	if (isset($_POST['reg_user'])) {
@@ -26,8 +25,6 @@
 		$lName = $_POST['lName'];
 		$birthDate = $_POST['birthdate'];
 		$about = $_POST['about'];
-
-
 
 	  	if (empty($username)) { 
 	  		array_push($errors, "Username is required"); 
@@ -63,7 +60,6 @@
 
 		// if user exists
 		if ($user){ 
-
 		    if ($user['ScreenName'] === $username) {
 		      array_push($errors, "Username already exists");
 		    }
@@ -91,13 +87,15 @@
 	        $statement2->bindValue(':about',$about);
 
 	        if ($statement2->execute()) {
+	        	$user = $statement->fetch()
 	        	$_SESSION['username'] = $username;
 		  		$_SESSION['success'] = "You are now logged in";
+		  		$_SESSION['user'] = $user;
 		  		echo $_SESSION['success'];
 	        }
 
 	  	} else {
-	  		echo "error";
+	  		$isErrors = true;
 	  	}
 	}
 
@@ -129,12 +127,16 @@
 			  	  	header('location: index.php');
 		  		}else {
 		  			array_push($errors, "Wrong username/password combination");
-		  			echo "error";
+		  			$isErrors = true;
 		  		}
 	  		}
 	  		else {
-	  			//make error flag for wrong username password
+	  			$isErrors = false;
 	  		}
 	  	}
+	}
+
+	if ($isErrors) {
+	  require("errors.php");
 	}
 ?>

@@ -2,7 +2,7 @@
     /*
       Group 5
       30SEP18
-      Assignment 4 BLOG
+      Assignment 4 BLOGs
       Creates a connection to the db phpmyadmin using our login credentials
     */
      define('DB_DSN','mysql:host=localhost;dbname=winnipeggames;charset=utf8');

@@ -8,18 +8,45 @@
 <html>
 <head>
   <title>Sign Up</title>
+  <script>
+    $(document).ready(function()
+    {
+      $("#username").keyup(function()
+      {
+        //store username input in variable
+        var uname = $("#username").val().trim();
+        //check to make sure somehtign has been input and it is atleast 3 characters long
+        if(uname != '' && uname.length >= 3)
+        {
+          $("#uname_response").show();
+          $.ajax({url: 'uname_check.php', type: 'post', data: {uname:uname}, success: function(response)
+          {
+            if(response > 0)
+            {
+              $("#uname_response").html("<span class='not-exists'>* Username Already in use.</span>");
+            }else
+            {
+              $("#uname_response").html("<span class='exists'>Available.</span>");
+            }
+          }
+          });
+        }else{
+          $("#uname_response").hide();
+        }
+      });
+    });
+  </script>
 </head>
 <body>
   <div class="header">
   	<h2>Register</h2>
-  </div>
-	
+  </div>	
   <form method="post" action="server.php">
-  	<?php include('errors.php'); ?>
 
   	<div class="input-group">
   	  <label>Username</label>
-  	  <input type="text" name="username">
+  	  <input type="text" name="username" id="username">
+      <div id="uname_response" class="response"></div>
   	</div>
 
   	<div class="input-group">

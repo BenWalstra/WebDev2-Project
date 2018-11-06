@@ -3,5 +3,6 @@
   	<?php foreach ($errors as $error) : ?>
   	  <p><?php echo $error ?></p>
   	<?php endforeach ?>
+  	<a href="SignUp.php">Try Again</a>
   </div>
 <?php  endif ?>
