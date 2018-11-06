@@ -22,7 +22,7 @@
 		<?php include('nav.php')?>
 		<ul class="nav nav-pills nav-stacked" role="tablist">
 			<li><a href="addPlatform.php">Add Platform</a></li>
-			<li><a href="#">Add Game</a></li>
+			<li><a href="addGame.php">Add Game</a></li>
 			<li><a href="#">Edit Users</a></li>
 		</ul>	
 	</div>
